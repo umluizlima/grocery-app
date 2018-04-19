@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, jsonify, abort
+from flask import Flask, render_template, jsonify, abort, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
@@ -16,6 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or \
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # DB
 db = SQLAlchemy(app)
+# Object serialization
 ma = Marshmallow(app)
 # DB Migration
 migrate = Migrate(app, db)
@@ -57,7 +58,13 @@ def read_items():
 
 @app.route('/list', methods=["POST"])
 def create_item():
-    return "POST on /list"
+    data = request.get_json()
+    if 'content' not in data.keys():
+        abort(400)
+    item = Item(content=data['content'])
+    db.session.add(item)
+    db.session.commit()
+    return ItemSchema().jsonify(item)
 
 
 @app.route('/list/<int:id>', methods=["GET"])
@@ -68,17 +75,25 @@ def read_item(id):
     return ItemSchema().jsonify(item)
 
 
-@app.route('/list/<id>', methods=["PUT"])
+@app.route('/list/<int:id>', methods=["PUT"])
 def update_item(id):
-        return f"PUT on /list/{id}"
+    item = Item.query.filter_by(id=id).first()
+    if not item:
+        return abort(404)
+    data = request.get_json()
+    if 'content' not in data.keys() or 'done' not in data.keys():
+        abort(400)
+    item.content = data['content']
+    item.done = data['done']
+    db.session.commit()
+    return ItemSchema().jsonify(item)
 
 
-@app.route('/list/<id>', methods=["DELETE"])
+@app.route('/list/<int:id>', methods=["DELETE"])
 def delete_item(id):
-        return f"DELETE on /list/{id}"
-
-
-if __name__ == '__main__':
-    app.run(host='localhost',
-            port=5000,
-            debug=True)
+    item = Item.query.filter_by(id=id).first()
+    if not item:
+        return abort(404)
+    db.session.delete(item)
+    db.session.commit()
+    return "", 204
