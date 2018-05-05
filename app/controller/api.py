@@ -7,7 +7,7 @@ from app.model import db, Item, ItemSchema
 bp = Blueprint('api', __name__, url_prefix='/list')
 
 
-@bp.route('/', methods=["POST"])
+@bp.route('', methods=["POST"])
 def create_item():
     data = request.get_json()
     if 'content' not in data.keys():
@@ -18,7 +18,7 @@ def create_item():
     return ItemSchema().jsonify(item)
 
 
-@bp.route('/', methods=["GET"])
+@bp.route('', methods=["GET"])
 def read_items():
     items = ItemSchema(many=True).dump(Item.query.all()).data
     return jsonify(sorted(items, key=itemgetter('done')))
