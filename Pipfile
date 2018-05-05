@@ -5,17 +5,13 @@ name = "pypi"
 
 [packages]
 flask = "*"
-gunicorn = "*"
-pytest = "*"
 flask-sqlalchemy = "*"
-flask-migrate = "*"
 flask-marshmallow = "*"
+flask-migrate = "*"
 marshmallow-sqlalchemy = "*"
 python-dotenv = "*"
-"e1839a8" = {path = ".", editable = true}
 
 [dev-packages]
-httpie = "*"
 
 [requires]
 python_version = "3.6"
