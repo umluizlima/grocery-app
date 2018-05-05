@@ -12,6 +12,7 @@ flask-migrate = "*"
 flask-marshmallow = "*"
 marshmallow-sqlalchemy = "*"
 python-dotenv = "*"
+"e1839a8" = {path = ".", editable = true}
 
 [dev-packages]
 httpie = "*"
