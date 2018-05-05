@@ -100,6 +100,8 @@ function card(item) {
   const content = document.createElement('p');
   content.setAttribute('class', 'content');
   content.setAttribute('contenteditable', 'true');
+  content.setAttribute('onblur', 'update_item(' + item.id + ')');
+  content.setAttribute('onsubmit', 'update_item(' + item.id + ')');
   content.textContent = item.content;
   card.appendChild(content);
 
