@@ -1,10 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // console.log('document is ready. I can sleep now');
   read_items();
   const form = document.querySelector('#create-form');
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    console.log(document.querySelector('#create-content').value);
     create_item();
   });
 });
@@ -18,8 +16,9 @@ function create_item() {
   var xhr = new XMLHttpRequest();
   xhr.open('POST', document.location + 'list');
   xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
-  xhr.onload = function (item) {
-    container.insertBefore(card(item), container.childNodes[0]);
+  xhr.onload = function () {
+    var data = JSON.parse(xhr.responseText);
+    container.insertBefore(card(data), container.childNodes[0]);
   };
   xhr.onerror = function (err) {
     requestError(err, 'issue on POST');
@@ -48,9 +47,7 @@ function read_items() {
 function update_item(id) {
   var card = document.getElementById(id);
   content = card.querySelector('.content').textContent;
-  // content = card.childNodes[0].innerHTML;
   done = card.querySelector('.done').checked;
-  // done = card.childNodes[1].checked;
 
   var xhr = new XMLHttpRequest();
   xhr.open('PUT', document.location + 'list/' + id);

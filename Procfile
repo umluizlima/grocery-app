@@ -1,1 +1,1 @@
-web: gunicorn grocery_app:app
+web: gunicorn app:app --log-file=-
