@@ -25,5 +25,5 @@ def create_app():
     from app.controller import main, api
     app.register_blueprint(main.bp)
     app.register_blueprint(api.bp)
-    
+
     return app
