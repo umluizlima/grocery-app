@@ -52,7 +52,15 @@ function update_item(id) {
   var xhr = new XMLHttpRequest();
   xhr.open('PUT', document.location + 'list/' + id);
   xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
-  xhr.onload = refresh_list;
+  xhr.onload = function () {
+    var item = document.getElementById(id);
+    if (done) {
+      container.appendChild(item);
+    }
+    else {
+      container.insertBefore(item, container.childNodes[0]);
+    }
+  };
   xhr.onerror = function (err) {
     requestError(err, 'issue on PUT');
   };
@@ -65,19 +73,14 @@ function update_item(id) {
 function delete_item(id) {
   var xhr = new XMLHttpRequest();
   xhr.open('DELETE', document.location + 'list/' + id);
-  xhr.onload = refresh_list;
+  xhr.onload = function () {
+    var item = document.getElementById(id);
+    container.removeChild(item);
+  };
   xhr.onerror = function (err) {
     requestError(err, 'issue on DELETE');
   };
   xhr.send();
-}
-
-function refresh_list() {
-  var cards = document.getElementsByClassName('card');
-  while(cards[0]) {
-      cards[0].parentNode.removeChild(cards[0]);
-  }
-  read_items();
 }
 
 function card(item) {
@@ -113,7 +116,13 @@ function card(item) {
   return card;
 }
 
-
+// function refresh_list() {
+//   var cards = document.getElementsByClassName('card');
+//   while(cards[0]) {
+//       cards[0].parentNode.removeChild(cards[0]);
+//   }
+//   read_items();
+// }
 
 // AJAX
 
