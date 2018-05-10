@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 const app = document.querySelector('main');
-const container = document.createElement('div');
-container.setAttribute('class', 'container');
+const container = document.createElement('table');
+// container.setAttribute('class', 'container');
 app.insertBefore(container, app.childNodes[0]);
 
 function create_item() {
@@ -84,21 +84,29 @@ function delete_item(id) {
 }
 
 function card(item) {
-  const card = document.createElement('div');
-  card.setAttribute('class', 'card');
+  const card = document.createElement('tr');
+  // card.setAttribute('class', 'card');
   card.setAttribute('id', item.id);
   card.setAttribute('overflow', 'hidden');
 
   const done = document.createElement('input');
-  done.setAttribute('class', 'done');
   done.setAttribute('type', 'checkbox');
   done.setAttribute('onClick', 'update_item(' + item.id + ')');
+  done.setAttribute('id', 'done' + item.id);
+  done.setAttribute('class', 'done');
   if (item.done == true) {
     done.checked = true;
   } else {
     done.checked = false;
   }
   card.appendChild(done);
+
+  const label = document.createElement('label');
+  label.setAttribute('for', 'done' + item.id);
+  // label.setAttribute('class', 'material-icons');
+  // label.textContent = 'checkbox';
+  card.appendChild(label);
+
 
   const content = document.createElement('p');
   content.setAttribute('class', 'content');
@@ -110,7 +118,8 @@ function card(item) {
 
   const del = document.createElement('button');
   del.setAttribute('onClick', 'delete_item(' + item.id + ')');
-  del.textContent = "X";
+  del.setAttribute('class', 'material-icons');
+  del.textContent = "delete_outline";
   card.appendChild(del);
 
   return card;
