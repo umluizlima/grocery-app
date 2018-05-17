@@ -1,26 +1,30 @@
-const cacheName = 'flask-PWA-v1';
-const filesToCache = [
-    '/',
-    '/static/js/app.js',
-    '/static/css/style.css',
-    'https://fonts.googleapis.com/css?family=Open+Sans',
-    'https://fonts.googleapis.com/icon?family=Material+Icons',
-    'https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css'
-];
+const cacheName = 'Grocery-App';
 
-self.addEventListener('install', function(e) {
+self.addEventListener('install', e => {
   console.log('[ServiceWorker] Install');
+  const timeStamp = Date.now();
   e.waitUntil(
-    caches.open(cacheName).then(function(cache) {
+    caches.open(cacheName).then(cache => {
       console.log('[ServiceWorker] Caching app shell');
-      return cache.addAll(filesToCache);
+      return cache.addAll([
+        '/',
+        '/static/js/app.js',
+        '/static/css/style.css'
+      ])
+      .then(() => {
+        console.log('[ServiceWorker] Successfully cached');
+        self.skipWaiting()
+      })
+      .catch((error) => {
+        console.log(error)
+      });
     })
   );
 });
 
-self.addEventListener('activate', function(e) {
+self.addEventListener('activate', event => {
   console.log('[ServiceWorker] Activate');
-    e.waitUntil(
+  event.waitUntil(
     caches.keys().then(function(keyList) {
       return Promise.all(keyList.map(function(key) {
         if (key !== cacheName) {
@@ -33,35 +37,13 @@ self.addEventListener('activate', function(e) {
   return self.clients.claim();
 });
 
-
-self.addEventListener('fetch', function(e) {
-  console.log('[ServiceWorker] Fetch', e.request.url);
-  e.respondWith(
-    caches.match(e.request).then(function(response) {
-      return response || fetch(e.request).catch(error => {
-          console.log('Fetch failed; returning offline page instead.', error);
-
-          let url = e.request.url;
-          let extension = url.split('.').pop();
-
-          if (extension === 'jpg' || extension === 'png') {
-
-              const FALLBACK_IMAGE = `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="180" stroke-linejoin="round">
-                <path stroke="#DDD" stroke-width="25" d="M99,18 15,162H183z"/>
-                <path stroke-width="17" fill="#FFF" d="M99,18 15,162H183z" stroke="#eee"/>
-                <path d="M91,70a9,9 0 0,1 18,0l-5,50a4,4 0 0,1-8,0z" fill="#aaa"/>
-                <circle cy="138" r="9" cx="100" fill="#aaa"/>
-                </svg>`;
-
-              return Promise.resolve(new Response(FALLBACK_IMAGE, {
-                  headers: {
-                      'Content-Type': 'image/svg+xml'
-                  }
-              }));
-          }
-
-          return caches.match('/');
-      });
+self.addEventListener('fetch', event => {
+  console.log('[ServiceWorker] Fetch', event.request.url);
+  event.respondWith(
+    caches.open(cacheName)
+      .then(cache => cache.match(event.request, {ignoreSearch: true}))
+      .then(response => {
+      return response || fetch(event.request);
     })
   );
 });

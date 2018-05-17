@@ -1,14 +1,16 @@
 (function() {
-  if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-      .register('/static/js/sw.js')
-      .then(function(registration) {
-          console.log('Service Worker Registered');
-          return registration;
-      })
-      .catch(function(err) {
-          console.error('Unable to register service worker.', err);
-      });
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+             .then(function(registration) {
+             console.log('Service Worker Registered');
+             return registration;
+    })
+    .catch(function(err) {
+      console.error('Unable to register service worker.', err);
+    });
+    navigator.serviceWorker.ready.then(function(registration) {
+      console.log('Service Worker Ready');
+    });
   }
 })();
 
@@ -23,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 const app = document.querySelector('main');
 const container = document.createElement('table');
-// container.setAttribute('class', 'container');
 app.insertBefore(container, app.childNodes[0]);
 
 function create_item() {
@@ -35,7 +36,7 @@ function create_item() {
     container.insertBefore(card(data), container.childNodes[0]);
   };
   xhr.onerror = function (err) {
-    requestError(err, 'issue on POST');
+    console.error(err, 'issue on POST');
   };
   xhr.send(JSON.stringify({
     content: document.querySelector('#create-content').value
@@ -53,7 +54,7 @@ function read_items() {
     });
   };
   xhr.onerror = function (err) {
-    requestError(err, 'issue on GET');
+    console.error(err, 'issue on GET');
   };
   xhr.send();
 }
@@ -76,7 +77,7 @@ function update_item(id) {
     }
   };
   xhr.onerror = function (err) {
-    requestError(err, 'issue on PUT');
+    console.error(err, 'issue on PUT');
   };
   xhr.send(JSON.stringify({
     content: content,
@@ -92,14 +93,13 @@ function delete_item(id) {
     container.removeChild(item);
   };
   xhr.onerror = function (err) {
-    requestError(err, 'issue on DELETE');
+    console.error(err, 'issue on DELETE');
   };
   xhr.send();
 }
 
 function card(item) {
   const card = document.createElement('tr');
-  // card.setAttribute('class', 'card');
   card.setAttribute('id', item.id);
   card.setAttribute('overflow', 'hidden');
 
@@ -145,79 +145,4 @@ function card(item) {
 //       cards[0].parentNode.removeChild(cards[0]);
 //   }
 //   read_items();
-// }
-
-// AJAX
-
-// $(document).ready(function() {
-//   read_items();
-// });
-
-// function create_item() {
-  // $.ajax({
-  //   url: document.location + 'list',
-  //   type: "POST",
-  //   contentType: "application/json",
-  //   dataType: 'json',
-  //   data: JSON.stringify({
-  //     content: document.getElementsByName('new_item_content')[0].value
-  //   }),
-  //   success: function(item) {
-  //     container.insertBefore(card(item), container.childNodes[0]);
-  //   }
-  // });
-// }
-
-// function read_items() {
-// $.ajax({
-//   url: document.location + 'list',
-//   type: "GET",
-//   dataType: 'json',
-//   success: function(data) {
-//     data.forEach(function(item) {
-//       container.appendChild(card(item));
-//     });
-//   }
-// });
-// }
-
-// function read_item(id) {
-//   $.ajax({
-//     url: document.location + 'list/' + id,
-//     type: "GET",
-//     dataType: 'json',
-//     success: function(item) {
-//       container.appendChild(card(item));
-//     }
-//   });
-// }
-
-// function update_item(id) {
-//   var card = document.getElementById(id);
-//   content = card.childNodes[0].innerHTML;
-//   done = card.childNodes[1].checked;
-//   $.ajax({
-//     url: document.location + 'list/' + id,
-//     type: "PUT",
-//     contentType: "application/json",
-//     dataType: 'json',
-//     data: JSON.stringify({
-//       content: content,
-//       done: done
-//     }),
-//     success: function(data) {
-//       refresh_list();
-//     }
-//   });
-// }
-
-// function delete_item(id) {
-//   $.ajax({
-//     url: document.location + 'list/' + id,
-//     type: "DELETE",
-//     dataType: 'json',
-//     success: function(data) {
-//       refresh_list();
-//     }
-//   });
 // }

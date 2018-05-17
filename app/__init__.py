@@ -20,8 +20,9 @@ def create_app():
     ma.init_app(app)
     migrate.init_app(app, db)
 
-    from app.controller import main, api
+    from app.controller import main, pwa, api
     app.register_blueprint(main.bp)
+    app.register_blueprint(pwa.bp)
     app.register_blueprint(api.bp)
 
     return app
