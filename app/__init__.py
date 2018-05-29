@@ -17,6 +17,10 @@ def create_app():
     except OSError:
         pass
 
+    from flask_sslify import SSLify
+    if 'DYNO' in os.environ:
+        sslify = SSLify(app)
+
     from app.model import db, ma, migrate
     db.init_app(app)
     ma.init_app(app)

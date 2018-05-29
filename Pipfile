@@ -12,6 +12,7 @@ marshmallow-sqlalchemy = "*"
 python-dotenv = "*"
 "psycopg2" = "*"
 gunicorn = "*"
+flask-sslify = "*"
 
 [dev-packages]
 
