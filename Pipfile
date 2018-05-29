@@ -13,6 +13,7 @@ python-dotenv = "*"
 "psycopg2" = "*"
 gunicorn = "*"
 flask-sslify = "*"
+flask-cors = "*"
 
 [dev-packages]
 

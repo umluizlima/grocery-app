@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_cors import CORS
 
 
 def create_app():
@@ -16,6 +17,8 @@ def create_app():
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    cors = CORS(app, resources={r"/list/*": {"origins": "*"}})
 
     from flask_sslify import SSLify
     if 'DYNO' in os.environ:
