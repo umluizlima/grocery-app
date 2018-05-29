@@ -22,7 +22,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  font-family: OpenSans, sans-serif;
+  font-family: sans-serif;
   margin: 0;
   padding: 0;
   background-color: var(--divider-color);
@@ -91,12 +91,13 @@ textarea {
   font-size: .95rem;
 }
 
-table {
+ul {
   display: grid;
+  list-style-type: none;
   grid-template-columns: 1fr;
 }
 
-tr {
+li {
   display: grid;
   grid-template-columns: 1fr 5fr 1fr;
   grid-gap: 5px;
@@ -109,13 +110,13 @@ tr {
   border: 1px solid black;
 }
 
-tr button {
+li button {
   background: var(--accent-color);
   color: var(--text-color);
   border: 0.1em solid var(--primary-text-color);
 }
 
-input[type=checkbox] + label {
+/* input[type=checkbox] + label {
   display: block;
   margin: 0.2em;
   cursor: pointer;
@@ -147,7 +148,7 @@ input[type=checkbox] + label:active:before {
 input[type=checkbox]:checked + label:before {
   background-color: var(--accent-color);
   color: var(--text-color);
-}
+} */
 
 a {
     text-decoration: none;
@@ -171,7 +172,7 @@ a:hover {
   main {
     max-width: 1200px;
   }
-  table {
+  ul {
     grid-template-columns: repeat(3, 1fr);
   }
 }

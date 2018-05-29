@@ -25,6 +25,7 @@ Feel free to open a new issue, fork this repository and submit pull requests.
 - Inspiration and references:
   - [Cassio Botaro's Do Zero ao Deploy](https://github.com/cassiobotaro/do_zero_ao_deploy)
   - [Bruno Rocha's What The Flask](http://pythonclub.com.br/what-the-flask-pt-1-introducao-ao-desenvolvimento-web-com-python.html)
+  - [yymm's Flask VueJS examples](https://github.com/yymm/flask-vuejs)
 
 ## Licensing
 
