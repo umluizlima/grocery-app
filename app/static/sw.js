@@ -8,8 +8,8 @@ self.addEventListener('install', e => {
       console.log('[ServiceWorker] Caching app shell');
       return cache.addAll([
         '/',
-        '/static/js/app.js',
-        '/static/css/style.css'
+        '/js/app.js',
+        '/css/style.css'
       ])
       .then(() => {
         console.log('[ServiceWorker] Successfully cached');
